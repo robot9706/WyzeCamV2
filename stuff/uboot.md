@@ -208,3 +208,46 @@ The flash is 16MB or 16 777 216 bytes so the address space is: 0x0 - 0xFFFFFF.
 
     Username: "root"
     Password: "ismart12"
+
+## Partition table:
+
+    dev:    size   erasesize  name
+    mtd0:  00040000 00008000 "boot"
+    mtd1:  00200000 00008000 "kernel"
+    mtd2:  00350000 00008000 "root"
+    mtd3:  000a0000 00008000 "driver"
+    mtd4:  004a0000 00008000 "appfs"
+    mtd5:  00200000 00008000 "backupk"
+    mtd6:  000a0000 00008000 "backupd"
+    mtd7:  00200000 00008000 "backupa"
+    mtd8:  00040000 00008000 "config"
+    mtd9:  00040000 00008000 "para"
+    mtd10: 00010000 00008000 "flag"
+	
+	0x000000000000-0x000000040000 : "boot"
+	0x000000040000-0x000000240000 : "kernel"
+	0x000000240000-0x000000590000 : "root"
+	0x000000590000-0x000000630000 : "driver"
+	0x000000630000-0x000000ad0000 : "appfs"
+	0x000000ad0000-0x000000cd0000 : "backupk"
+	0x000000cd0000-0x000000d70000 : "backupd"
+	0x000000d70000-0x000000f70000 : "backupa"
+	0x000000f70000-0x000000fb0000 : "config"
+	0x000000fb0000-0x000000ff0000 : "para"
+	0x000000ff0000-0x000001000000 : "flag"
+
+
+## IP tables log:
+
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 122.248.234.207 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 46.137.188.54 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 122.226.84.253 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 61.188.37.216 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 120.24.59.150 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 114.215.137.159 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 104.199.156.58 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 52.79.197.188 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 61.220.62.219 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 42.99.254.162 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 203.69.81.91 -j DROP
+	[SYS exec] /etc/app/xtables-multi iptables -I OUTPUT -d 210.61.248.232 -j DROP

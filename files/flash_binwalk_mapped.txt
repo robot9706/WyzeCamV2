@@ -1,0 +1,24 @@
+0x0000000-0x0040000 : "boot"
+
+0x0040000-0x0240000 : "kernel"
+		0x40000         uImage header, header size: 64 bytes, header CRC: 0x49214A6D, created: 2018-08-13 04:34:17, image size: 1839513 bytes, Data Address: 0x80010000, Entry Point: 0x803F5300, data CRC: 0x75F5071C, OS: Linux, CPU: MIPS, image type: OS Kernel Image, compression type: lzma, image name: "Linux-3.10.14"
+
+0x0240000-0x0590000 : "root"
+		0x240000        Squashfs filesystem, little endian, version 4.0, compression:xz, size: 3352028 bytes, 406 inodes, blocksize: 131072 bytes, created: 2019-07-22 02:21:23
+
+0x0590000-0x0630000 : "driver"		
+		0x590000        Squashfs filesystem, little endian, version 4.0, compression:xz, size: 571974 bytes, 12 inodes, blocksize: 131072 bytes, created: 2019-01-23 02:55:16
+
+0x0630000-0x0ad0000 : "appfs"
+
+0x0ad0000-0x0cd0000 : "backupk"
+
+0x0cd0000-0x0d70000 : "backupd"
+
+0x0d70000-0x0f70000 : "backupa"
+
+0x0f70000-0x0fb0000 : "config"
+
+0x0fb0000-0x0ff0000 : "para"
+
+0x0ff0000-0x1000000 : "flag"

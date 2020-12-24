@@ -6,15 +6,9 @@
 
         mkdir /tmp/usb
 
-        mount /dev/sda1 /tmp/usb
+        mount -o exec /dev/sda1 /tmp/usb
 
-3) Copy the ssh tool to `system/bin`:
-
-        cp /tmp/usb/dropbearmulti /system/bin
-
-    This is needed because /system/bin is in an executable partition, or mount the drive as an executable partition.
-
-4) Generate a key:
+3) Generate a key:
 
         dropbearmulti dropbearkey -t ecdsa -f /tmp/key.ecdsa
 

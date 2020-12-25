@@ -43,15 +43,16 @@ int getSensorName()
 	// Using iotcl to get sensor info.
 	// cmd is IOCTL_SINFO_GET, data note sensor type according to SENSOR_TYPE
 	ret = ioctl(fd, IOCTL_SINFO_GET, &data);
+	close(fd);
+
 	if (0 != ret) {
-		close(fd);
+
 		printf("SensorInfo IOCTL failed\n");
 		return -1;
 	}
 	if (SENSOR_TYPE_INVALID == data)
 	{
 		printf("Got invalid sensor data!\n");
-		close(fd);
 		return -1;
 	}
 
@@ -129,11 +130,30 @@ static int init_isp()
 
 static int exit_isp()
 {
-	if(IMP_ISP_Close()){
-		printf("failed to open ISP\n");
+	if (IMP_System_Exit() < 0) {
+		printf("IMP System exit failed\n");
 		return -1;
 	}
-	printf("ISP closed\n");
+
+	if (IMP_ISP_DisableSensor() < 0){
+		printf("Failed to DisableSensor\n");
+		return -1;
+	}
+
+	if (IMP_ISP_DelSensor(&sensor_info) < 0){
+		printf("Failed to delete sensor\n");
+		return -1;
+	}
+
+	if (IMP_ISP_DisableTuning() < 0){
+		printf("IMP_ISP_DisableTuning failed\n");
+		return -1;
+	}
+
+	if (IMP_ISP_Close()) {
+		printf("Failed to close ISP\n");
+		return -1;
+	}
 
 	return 0;
 }
@@ -210,6 +230,21 @@ static int create_jpeg_encoder(int groupIndex)
 	return 0;
 }
 
+static int destroy_jpeg_encoder(int group)
+{
+	if (IMP_Encoder_UnRegisterChn(channel_config.encoderIndex) < 0) {
+		printf("Failed to unregister encoder channel\n");
+		return -1;
+	}
+
+	if (IMP_Encoder_DestroyChn(channel_config.encoderIndex) < 0) {
+		printf("Failed to destroy encoder channel!\n");
+		return -1;
+	}
+
+	return 0;
+}
+
 static int init_framesource()
 {
 	printf("Creating channel\n");
@@ -259,6 +294,31 @@ static int init_framesource()
 
 static int destroy_framesource()
 {
+	if (IMP_FrameSource_DisableChn(channel_config.index) < 0) {
+		printf("Failed to disable frame source\n");
+		return -1;
+	}
+
+	if (IMP_System_UnBind(&channel_config.framesource_chn, &channel_config.imp_encoder) < 0) {
+		printf("Failed to unbind\n");
+		return -1;
+	}
+
+	if (destroy_jpeg_encoder(channel_config.index) < 0) {
+		printf("Failed to destroy encoder\n");
+		return -1;
+	}
+
+	if (IMP_Encoder_DestroyGroup(channel_config.index) < 0) {
+		printf("Failed to destroy encoder group\n");
+		return -1;
+	}
+
+	if (IMP_FrameSource_DestroyChn(channel_config.index) < 0) {
+		printf("Failed to destroy framesource channel\n");
+		return -1;
+	}
+
 	return 0;
 }
 
@@ -375,6 +435,8 @@ int main()
 
 	printf("Press anything to exit :>\n");
 	getchar();
+
+	destroy_framesource();
 
 	exit_isp();
 

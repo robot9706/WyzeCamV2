@@ -1,0 +1,1 @@
+https://infraroot.at/pub/squashfs/windows/
